@@ -28,6 +28,13 @@ from .core import (
 CANVAS_MAX = 620
 
 
+def display_size(width: int, height: int, max_size: int = CANVAS_MAX) -> tuple:
+    """Anzeigegröße, die ein Bild vollständig in ein Quadrat der Kantenlänge
+    max_size einpasst; Rückgabe (breite, höhe) in Canvas-Pixeln."""
+    scale = min(max_size / width, max_size / height)
+    return (max(1, int(width * scale)), max(1, int(height * scale)))
+
+
 class LithophaneApp(tk.Tk):
     def __init__(self) -> None:
         super().__init__()
@@ -186,9 +193,9 @@ class LithophaneApp(tk.Tk):
         if self.image is None:
             return
         width, height = self.image.size
-        scale = min(CANVAS_MAX / width, CANVAS_MAX / height)
-        self.display_scale = scale
-        self.canvas.config(width=int(width * scale), height=int(height * scale))
+        disp_w, disp_h = display_size(width, height)
+        self.display_scale = disp_w / width
+        self.canvas.config(width=disp_w, height=disp_h)
 
     # ------------------------------------------------------------- Skizzen
 
@@ -268,7 +275,9 @@ class LithophaneApp(tk.Tk):
         else:
             gray = np.zeros_like(thickness, dtype=np.uint8)
         preview = Image.fromarray(gray, mode="L").convert("RGB")
-        preview = preview.resize(self.image.size, Image.NEAREST)
+        preview = preview.resize(
+            display_size(self.image.width, self.image.height), Image.NEAREST
+        )
         self.preview_photo = ImageTk.PhotoImage(preview)
 
         height, width = heightmap.shape
@@ -293,10 +302,8 @@ class LithophaneApp(tk.Tk):
         else:
             photo = ImageTk.PhotoImage(
                 self.image.resize(
-                    (
-                        int(self.image.width * self.display_scale),
-                        int(self.image.height * self.display_scale),
-                    )
+                    display_size(self.image.width, self.image.height),
+                    Image.LANCZOS,
                 )
             )
             self._base_photo = photo

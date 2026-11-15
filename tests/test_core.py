@@ -40,6 +40,17 @@ def test_mask_without_sketches() -> None:
     assert sketch_mask(heightmap, [], "inside").all()
 
 
+def test_display_size() -> None:
+    from lithophane.gui import CANVAS_MAX, display_size
+
+    assert display_size(4000, 3000) == (620, 465)
+    assert display_size(2000, 4000) == (310, 620)
+    for width, height in [(4000, 3000), (800, 600), (3000, 4000), (100, 100)]:
+        w, h = display_size(width, height)
+        assert w <= CANVAS_MAX and h <= CANVAS_MAX
+        assert abs(w / width - h / height) < 0.01
+
+
 def test_sketch_limits_model() -> None:
     with tempfile.TemporaryDirectory() as tmp:
         image = os.path.join(tmp, "motiv.png")
@@ -74,4 +85,5 @@ def test_sketch_limits_model() -> None:
 if __name__ == "__main__":
     test_points_in_polygon()
     test_mask_without_sketches()
+    test_display_size()
     test_sketch_limits_model()
