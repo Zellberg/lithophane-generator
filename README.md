@@ -48,6 +48,22 @@ python main.py
 3. Skizzen direkt auf dem Bild zeichnen (siehe oben), um das Lithophan zu begrenzen.
 4. „STEP exportieren …“ (oder STL) – Zieldatei wählen.
 
+### Desktop-Verknüpfung (Windows)
+
+Im Projektordner liegt `start_lithophane.bat`. Ein Doppelklick darauf startet die
+Oberfläche ohne Konsolenfenster — es wird automatisch die virtuelle Umgebung
+verwendet, falls vorhanden.
+
+Für einen echten Desktop-Button:
+
+1. Rechtsklick auf eine freie Stelle des Desktops → **Neu → Verknüpfung**
+2. Über **Durchsuchen** die Datei `start_lithophane.bat` im Projektordner wählen
+   (z. B. `C:\Projekte\lithophane-generator\start_lithophane.bat`) → **Weiter**
+3. Name vergeben, z. B. „Lithophan-Generator“ → **Fertig stellen**
+4. Optional: Rechtsklick auf die neue Verknüpfung → **Eigenschaften →
+   Anderes Symbol…** für ein eigenes Symbol, oder per Rechtsklick →
+   **An Taskleiste anheften**
+
 ### Kommandozeile (ohne Oberfläche)
 
 ```bash
